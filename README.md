@@ -1,15 +1,12 @@
 # Grapesjs Table
 
-[DEMO](##)
-> **Provide a live demo of your plugin**
-For a better user engagement create a simple live demo by using services like [JSFiddle](https://jsfiddle.net) [CodeSandbox](https://codesandbox.io) [CodePen](https://codepen.io) and link it here in your README (attaching a screenshot/gif will also be a plus).
-To help you in this process here below you will find the necessary HTML/CSS/JS, so it just a matter of copy-pasting on some of those services. After that delete this part and update the link above
+Table component plus block, with abstracted properties for easier editing.
 
 ### HTML
 ```html
 <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet">
 <script src="https://unpkg.com/grapesjs"></script>
-<script src="https://unpkg.com/grapesjs-table"></script>
+<script src="https://unpkg.com/grapesjs-table-component"></script>
 
 <div id="gjs"></div>
 ```
@@ -21,7 +18,7 @@ const editor = grapesjs.init({
   height: '100%',
   fromElement: true,
   storageManager: false,
-  plugins: ['grapesjs-table'],
+  plugins: ['grapesjs-table-component'],
 });
 ```
 
@@ -36,15 +33,11 @@ body, html {
 
 ## Summary
 
-* Plugin name: `grapesjs-table`
+* Plugin name: `grapesjs-table-component`
 * Components
-    * `component-id-1`
-    * `component-id-2`
-    * ...
+    * `table`
 * Blocks
-    * `block-id-1`
-    * `block-id-2`
-    * ...
+    * `table`
 
 
 
@@ -59,11 +52,11 @@ body, html {
 ## Download
 
 * CDN
-  * `https://unpkg.com/grapesjs-table`
+  * `https://unpkg.com/grapesjs-table-component`
 * NPM
-  * `npm i grapesjs-table`
+  * `npm i grapesjs-table-component`
 * GIT
-  * `git clone https://github.com/Ju99ernaut/grapesjs-table.git`
+  * `git clone https://github.com/Ju99ernaut/grapesjs-table-component.git`
 
 
 
@@ -73,7 +66,7 @@ Directly in the browser
 ```html
 <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
 <script src="https://unpkg.com/grapesjs"></script>
-<script src="path/to/grapesjs-table.min.js"></script>
+<script src="path/to/grapesjs-table-component.min.js"></script>
 
 <div id="gjs"></div>
 
@@ -81,9 +74,9 @@ Directly in the browser
   var editor = grapesjs.init({
       container: '#gjs',
       // ...
-      plugins: ['grapesjs-table'],
+      plugins: ['grapesjs-table-component'],
       pluginsOpts: {
-        'grapesjs-table': { /* options */ }
+        'grapesjs-table-component': { /* options */ }
       }
   });
 </script>
@@ -92,7 +85,7 @@ Directly in the browser
 Modern javascript
 ```js
 import grapesjs from 'grapesjs';
-import plugin from 'grapesjs-table';
+import plugin from 'grapesjs-table-component';
 import 'grapesjs/dist/css/grapes.min.css';
 
 const editor = grapesjs.init({
@@ -116,8 +109,8 @@ const editor = grapesjs.init({
 Clone the repository
 
 ```sh
-$ git clone https://github.com/Ju99ernaut/grapesjs-table.git
-$ cd grapesjs-table
+$ git clone https://github.com/Ju99ernaut/grapesjs-table-component.git
+$ cd grapesjs-table-component
 ```
 
 Install dependencies

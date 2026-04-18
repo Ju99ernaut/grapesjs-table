@@ -1,11 +1,11 @@
 {
-  "name": "grapesjs-table",
-  "version": "1.0.0",
+  "name": "grapesjs-table-component",
+  "version": "1.0.1",
   "description": "Grapesjs Table",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ju99ernaut/grapesjs-table.git"
+    "url": "https://github.com/Ju99ernaut/grapesjs-table-component.git"
   },
   "scripts": {
     "start": "grapesjs-cli serve",

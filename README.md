@@ -45,7 +45,10 @@ body, html {
 
 | Option | Description | Default |
 |-|-|-
-| `option1` | Description option | `default value` |
+| `id` | Block and component ids | `table` |
+| `label` | Block label | `Table` |
+| `category` | Block category | `Basic` |
+| `block` | Extend default block | `{}` |
 
 
 

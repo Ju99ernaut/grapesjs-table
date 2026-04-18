@@ -37,6 +37,6 @@ export const styles: Plugin<PluginOptions> = (editor) => {
     "selector:add",
     (selector) =>
       privateCls.indexOf(selector.getFullName()) >= 0 &&
-      selector.set("private", 1),
+      selector.set("private", true),
   );
 };

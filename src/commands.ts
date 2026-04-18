@@ -32,7 +32,9 @@ export const commands: Plugin<PluginOptions> = (editor) => {
       if (!table) return;
 
       const tbody = ensureSection(table, "tbody");
-      const at = editor.getSelected()?.parent()?.index() ?? tbody.components().length - 1;
+      const at =
+        editor.getSelected()?.parent()?.index() ??
+        tbody.components().length - 1;
       const columns = Math.max(1, getColumnCount(table));
       tbody.append(makeRow("body", columns), { at: at + 1 });
       editor.refresh();
@@ -114,8 +116,7 @@ export const commands: Plugin<PluginOptions> = (editor) => {
     run() {
       const table = getActiveTable(editor);
       if (!table) return;
-      const on = String(table.get("header") ?? "0") !== "1";
-      table.set("header", on ? "1" : "0");
+      table.set("header", !table.get("header"));
       editor.refresh();
     },
   });
@@ -124,8 +125,7 @@ export const commands: Plugin<PluginOptions> = (editor) => {
     run() {
       const table = getActiveTable(editor);
       if (!table) return;
-      const on = String(table.get("footer") ?? "0") !== "1";
-      table.set("footer", on ? "1" : "0");
+      table.set("footer", !table.get("footer"));
       editor.refresh();
     },
   });

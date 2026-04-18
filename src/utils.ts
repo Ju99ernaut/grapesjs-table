@@ -77,6 +77,12 @@ export function makeCollectionRow(cols: number) {
   };
 }
 
+export function makeClonedRow(row: Component, dataCollection?: boolean) {
+  const clonedRow = cloneComponent(row);
+  clonedRow.type = dataCollection ? "data-collection-tr" : "tr";
+  return clonedRow;
+}
+
 export function normalizeColumnsInSection(
   section: Component,
   desiredCols: number,
@@ -141,14 +147,7 @@ export function getActiveTable(editor: Editor) {
   let current = editor.getSelected();
   if (!current) return null;
 
-  while (current) {
-    if (current.getType() === "table") {
-      return current;
-    }
-    current = current.parent();
-  }
-
-  return null;
+  return current.closestType("table");
 }
 
 function getColspan(cell: Component) {
@@ -258,14 +257,24 @@ export const isBorderEnabled = (
   direction: "vertical" | "horizontal",
   editor: Editor,
 ) => {
+  const selectorPrefix = getSelectorPrefix(editor);
+  const prefixedSelector = `${selectorPrefix}${selector}`;
   if (direction === "vertical") {
-    const left = getStyleValue(selector, "border-left-style", editor);
-    const right = getStyleValue(selector, "border-right-style", editor);
+    const left =
+      getStyleValue(prefixedSelector, "border-left-style", editor) ||
+      getStyleValue(selector, "border-left-style", editor);
+    const right =
+      getStyleValue(prefixedSelector, "border-right-style", editor) ||
+      getStyleValue(selector, "border-right-style", editor);
     return left !== "none" || right !== "none";
   }
 
-  const top = getStyleValue(selector, "border-top-style", editor);
-  const bottom = getStyleValue(selector, "border-bottom-style", editor);
+  const top =
+    getStyleValue(prefixedSelector, "border-top-style", editor) ||
+    getStyleValue(selector, "border-top-style", editor);
+  const bottom =
+    getStyleValue(prefixedSelector, "border-bottom-style", editor) ||
+    getStyleValue(selector, "border-bottom-style", editor);
   return top !== "none" || bottom !== "none";
 };
 
@@ -289,13 +298,12 @@ function getBorderWidth(editor: Editor) {
   const tableEl = table?.getEl();
 
   const defaultBorderWidth = tableEl
-    ? // @ts-expect-error Index BS
-      getComputedStyle(tableEl)["border-width"]
+    ? getComputedStyle(tableEl).borderWidth
     : undefined;
 
   return (
     defaultBorderWidth
-      .split(" ")
+      ?.split(" ")
       .find((value: string) => value && !value.startsWith("0")) || "1px"
   );
 }
@@ -304,16 +312,18 @@ function getBorderColor(editor: Editor) {
   const table = getCurrentTable(editor);
   const tableEl = table?.getEl();
 
-  const defaultBorderColor = tableEl
-    ? // @ts-expect-error Index BS
-      getComputedStyle(tableEl)["border-color"]
-    : undefined;
+  if (!tableEl) return "black";
 
-  return (
-    defaultBorderColor
-      .split(" ")
-      .find((value: string) => value && value !== "transparent") || "black"
-  );
+  const style = getComputedStyle(tableEl);
+
+  const colors = [
+    style.borderTopColor,
+    style.borderRightColor,
+    style.borderBottomColor,
+    style.borderLeftColor,
+  ];
+
+  return colors.find((value) => value && value !== "transparent") || "black";
 }
 
 function getBorderStyle(editor: Editor) {
@@ -321,13 +331,13 @@ function getBorderStyle(editor: Editor) {
   const tableEl = table?.getEl();
 
   const defaultBorderStyle = tableEl
-    ? // @ts-expect-error Index BS
-      getComputedStyle(tableEl)["border-style"]
+    ? getComputedStyle(tableEl).borderStyle
     : undefined;
 
   return (
-    defaultBorderStyle.find((value: string) => value && value !== "none") ||
-    "solid"
+    defaultBorderStyle
+      ?.split(" ")
+      .find((value: string) => value && value !== "none") || "solid"
   );
 }
 
@@ -348,7 +358,7 @@ function getSectionTraitStyle(
       return { "font-size": `${value}px` };
 
     case `${section}-vertical-borders`:
-      return value === "1"
+      return value
         ? {
             "border-left-style": getBorderStyle(editor),
             "border-right-style": getBorderStyle(editor),
@@ -363,7 +373,7 @@ function getSectionTraitStyle(
           };
 
     case `${section}-horizontal-borders`:
-      return value === "1"
+      return value
         ? {
             "border-top-style": getBorderStyle(editor),
             "border-bottom-style": getBorderStyle(editor),
@@ -464,7 +474,7 @@ function getSectionTraitValueFromCss(
       const right =
         getStyleValue(prefixedSelector, "border-right-style", editor) ??
         getStyleValue(selector, "border-right-style", editor);
-      return left === "none" && right === "none" ? "0" : "1";
+      return !(left === "none" || right === "none");
     }
 
     case `${section}-horizontal-borders`: {
@@ -474,7 +484,7 @@ function getSectionTraitValueFromCss(
       const bottom =
         getStyleValue(prefixedSelector, "border-bottom-style", editor) ??
         getStyleValue(selector, "border-bottom-style", editor);
-      return top === "none" && bottom === "none" ? "0" : "1";
+      return !(top === "none" || bottom === "none");
     }
 
     case "body-zebra-background":

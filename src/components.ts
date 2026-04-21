@@ -1,5 +1,5 @@
 import type { Component, Plugin } from "grapesjs";
-import type { PluginOptions } from "./types";
+import type { RequiredPluginOptions } from "./types";
 import {
   cloneComponent,
   ensureFooter,
@@ -23,7 +23,8 @@ import {
 } from "./traits";
 import { tableCss } from "./styles";
 
-export const components: Plugin<PluginOptions> = (editor) => {
+export const components: Plugin<RequiredPluginOptions> = (editor, opts) => {
+  const { cellDefaults, tableDefaults, cellModel, tableModel } = opts;
   const domc = editor.DomComponents;
 
   const tableBodyDelegate = {
@@ -134,6 +135,7 @@ export const components: Plugin<PluginOptions> = (editor) => {
         attributes: {
           class: "table-cell",
         },
+        ...cellDefaults,
       },
       init() {
         const toolbar = this.get("toolbar");
@@ -148,6 +150,7 @@ export const components: Plugin<PluginOptions> = (editor) => {
         });
         this.set("toolbar", toolbar);
       },
+      ...cellModel,
     },
     view: {
       events() {
@@ -189,6 +192,7 @@ export const components: Plugin<PluginOptions> = (editor) => {
           ...getStyleTraits("body", bodyStylesCategory),
         ],
         header: true,
+        ...tableDefaults,
       },
 
       syncHeaderAndFooter() {
@@ -243,6 +247,7 @@ export const components: Plugin<PluginOptions> = (editor) => {
         ]);
         if (dataResolver) this.setDataResolver();
       },
+      ...tableModel,
     },
   });
 

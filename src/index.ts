@@ -11,6 +11,10 @@ const plugin: Plugin<PluginOptions> = (editor, opt = {}) => {
     block: {},
     label: "Table",
     category: "Basic",
+    tableDefaults: {},
+    cellDefaults: {},
+    tableModel: {},
+    cellModel: {},
     ...opt,
   };
 

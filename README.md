@@ -49,6 +49,10 @@ body, html {
 | `label` | Block label | `Table` |
 | `category` | Block category | `Basic` |
 | `block` | Extend default block | `{}` |
+| `cellDefaults` | Extend component default properties | `{}` |
+| `cellModel` | Extend component model | `{}` |
+| `tableDefaults` | Extend component default properties | `{}` |
+| `tableModel` | Extend component model | `{}` |
 
 
 
